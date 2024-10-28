@@ -1,5 +1,6 @@
 from Bio.Blast import NCBIXML
 
+
 def parse_blast_results(blast_results):
     """解析 BLAST XML 结果并返回结构化摘要。"""
     blast_records = NCBIXML.parse(blast_results)

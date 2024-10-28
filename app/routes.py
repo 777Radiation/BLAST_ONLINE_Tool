@@ -1,16 +1,20 @@
 import io
 import json
 from datetime import datetime
+
+from Bio.Blast import NCBIWWW
 from flask import render_template, jsonify, request, redirect, url_for, flash
 from flask_login import login_user, logout_user, login_required, current_user
-from Bio.Blast import NCBIWWW, NCBIXML
+
 from app import app, db
 from app.models import User, Task
 from app.utils import parse_blast_results
 
+
 @app.route('/')
 def main_index():
     return render_template('main_index.html')
+
 
 @app.route('/<username>')
 @login_required
@@ -21,6 +25,7 @@ def user_index(username):
     user = User.query.filter_by(username=username).first_or_404()
     tasks = Task.query.filter_by(user_id=user.id).all()
     return render_template('user_index.html', tasks=tasks, user=user)
+
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -36,6 +41,7 @@ def register():
         return redirect(url_for('login'))
     return render_template('register.html')
 
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -49,11 +55,13 @@ def login():
             return render_template('login.html', error=True)
     return render_template('login.html')
 
+
 @app.route('/logout')
 @login_required
 def logout():
     logout_user()
     return redirect(url_for('main_index'))
+
 
 @app.route('/blast', methods=['GET', 'POST'])
 @login_required
@@ -88,6 +96,7 @@ def blast():
             return render_template('blast.html', task_running=task_running)
     return render_template('blast.html', task_running=task_running)
 
+
 @app.route('/<username>/<taskname>', methods=['GET'])
 @login_required
 def results(username, taskname):
@@ -98,6 +107,7 @@ def results(username, taskname):
         return redirect(url_for('user_index', username=current_user.username))
     parsed_results = json.loads(task.result) if task.result else []
     return render_template('results.html', task=task, results=parsed_results)
+
 
 @app.route('/delete_task/<int:task_id>', methods=['POST'])
 @login_required
@@ -111,9 +121,11 @@ def delete_task(task_id):
         flash('无权删除该任务或任务不存在！', 'error')
     return redirect(url_for('user_index', username=current_user.username))
 
+
 @app.errorhandler(404)
 def not_found(error):
     return render_template('404.html'), 404
+
 
 @app.errorhandler(Exception)
 def handle_exception(error):
