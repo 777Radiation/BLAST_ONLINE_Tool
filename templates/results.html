@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BLAST 结果</title>
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            background-color: #f8f9fa; /* 背景颜色 */
+        }
+        .container {
+            max-width: 75%; /* 最大宽度 */
+            margin-top: 50px; /* 上边距 */
+        }
+        .result-list {
+            margin-top: 30px; /* 结果列表上边距 */
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">BLAST 结果</h1>
+        <p class="lead"><strong>任务ID：</strong>{{ task.taskname }}</p>
+        <p class="lead"><strong>程序：</strong>{{ task.program }}</p>
+        <p class="lead"><strong>数据库：</strong>{{ task.database }}</p>
+        <p class="lead"><strong>序列：</strong></p>
+        <p class="bg-light p-2 border rounded">{{ task.sequence }}</p>
+
+        <div class="text-right mb-4">
+            <form action="{{ url_for('delete_task', task_id=task.id) }}" method="POST" class="d-inline">
+                <button type="submit" class="btn btn-danger">删除任务</button>
+            </form>
+            <a href="{{ url_for('user_index', username=current_user.username) }}" class="btn btn-primary">返回个人主页</a>
+        </div>
+
+        {% if results %}
+            <div class="result-list">
+                {% for result in results %}
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            <h5 class="mb-0">{{ result.title }}</h5>
+                        </div>
+                        <div class="card-body">
+                            <p><strong>长度:</strong> {{ result.length }}</p>
+                            <p><strong>分数:</strong> {{ result.score }}</p>
+                            <p><strong>E值:</strong> {{ result.e_value }}</p>
+                            <p><strong>查询起始:</strong> {{ result.query_start }}</p>
+                            <p><strong>查询结束:</strong> {{ result.query_end }}</p>
+                            <p><strong>比对结果:</strong></p>
+                            {% for i in range(0, result.qseq|length, 80) %}
+                                <div style="margin-bottom: 10px;">
+                                    <pre style="line-height: 1; margin: 0; overflow: hidden; white-space: pre-wrap; word-wrap: break-word;">      Query: {{ result.qseq[i:i+80] }}</pre>
+                                    <pre style="line-height: 1; margin: 0; overflow: hidden; white-space: pre-wrap; word-wrap: break-word;">      Match: {{ result.match[i:i+80] }}</pre>
+                                    <pre style="line-height: 1; margin: 0; overflow: hidden; white-space: pre-wrap; word-wrap: break-word;">      Sbjct: {{ result.hseq[i:i+80] }}</pre>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="alert alert-warning" role="alert">
+                没有结果返回。
+            </div>
+        {% endif %}
+    </div>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

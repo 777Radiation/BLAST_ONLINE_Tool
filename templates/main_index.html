@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BLAST ONLINE</title>
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <style>
+        body {
+            background-color: #f8f9fa; /* 背景色 */
+        }
+        .content-section {
+            margin-top: 40px;
+        }
+        .footer {
+            background-color: #343a40; /* 深色背景 */
+        }
+    </style>
+</head>
+<body class="d-flex flex-column min-vh-100">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <a class="navbar-brand">BLAST ONLINE</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+            <div class="navbar-nav">
+                <a class="nav-item nav-link" href="{{ url_for('login') }}">登录</a>
+                <a class="nav-item nav-link" href="{{ url_for('register') }}">注册</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container flex-fill mt-4">
+        <div class="text-center">
+            <h1>欢迎使用在线BLAST工具！</h1>
+            <p class="lead">BLAST（Basic Local Alignment Search Tool）是用于比较生物序列的工具。</p>
+            <img src="{{ url_for('static', filename='blast-image.jpg') }}" alt="BLAST Tool" class="img-fluid mt-4" style="max-width: 70%; height: auto;">
+        </div>
+
+        <div class="content-section">
+            <h2>关于BLAST</h2>
+            <p>BLAST 是用于快速比较生物序列（如 DNA、RNA 或蛋白质序列）的工具。它通过寻找相似的序列来帮助研究人员识别基因和蛋白质功能。</p>
+            <h3>主要功能</h3>
+            <ul>
+                <li>快速的序列比对</li>
+                <li>支持多种类型的序列</li>
+                <li>提供可视化结果和下载选项</li>
+            </ul>
+            <div class="content-section">
+                    <span>更多链接：</span>
+                    <a href="https://blast.ncbi.nlm.nih.gov/Blast.cgi">BLAST官网</a>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer bg-dark text-light text-center mt-auto py-md-01">
+        <div>
+            <p>&copy; 2024 BLAST ONLINE. BY 2021212421凌远洋.</p>
+        </div>
+    </footer>
+</body>
+</html>
